@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Informe de prácticas de CGSM (2025-2026)</title>
+        <link rel="stylesheet" type="text/css" href="report.css">
+    </head>
+    <body>
+        <!-- Información general -->
+        <div id="head">
+            <table id="general">
+                <tr>
+                    <th class="header">Nombre:</th>
+                    <td>Sergio Pociño Martínez</td>
+                </tr>
+                <tr>
+                    <th>Práctica:</th>
+                    <td>1</td>
+                </tr>
+            </table>
+        </div>
+        <div id="content">
+            <h1>Memoria</h1>
+
+            <h2>Descripción de la práctica</h2>
+            <p>
+                En esta sesión se ha introducido el desarrollo de aplicaciones gráficas en el navegador
+                usando <span class="code">WebGL</span> a través de la librería <span class="code">Three.js</span>,
+                gestionando el proyecto con <span class="code">webpack</span> como bundler.
+                Se han creado escenas 3D progresivamente más complejas, trabajando con geometrías, materiales e iluminación.
+            </p>
+
+            <h2>Ejercicio 1 — Verificación de soporte WebGL</h2>
+            <p>
+                Se verifica si el navegador soporta WebGL 2 usando la clase <span class="code">WEBGL</span> de Three.js
+                y se informa al usuario con un mensaje en verde (soportado) o rojo (no soportado).
+            </p>
+            <p><strong>¿Soporta tu navegador WebGL?</strong>
+                Sí. El navegador Google Chrome soporta WebGL 2 correctamente.</p>
+            <iframe class="container" src="prac1-1.html"></iframe>
+
+            <h2>Ejercicio 2 — Escena básica: cubo con cámara en perspectiva</h2>
+            <p>
+                Se crea la primera escena 3D: un cubo con <span class="code">MeshBasicMaterial</span>,
+                una <span class="code">PerspectiveCamera</span> posicionada en (0,0,300) y un
+                <span class="code">WebGLRenderer</span> añadido al DOM.
+            </p>
+            <iframe class="container" src="prac1-2.html"></iframe>
+
+            <h2>Ejercicio 3 — Escena con cubo, cilindro y esfera</h2>
+            <p>
+                Se añaden tres objetos a la escena con geometrías distintas
+                (<span class="code">BoxGeometry</span>, <span class="code">CylinderGeometry</span>,
+                <span class="code">SphereGeometry</span>) y materiales básicos de color.
+                También se añade un listener al evento <span class="code">resize</span> para adaptar
+                la cámara y el renderer al cambiar el tamaño de la ventana.
+            </p>
+            <iframe class="container" src="prac1-3.html"></iframe>
+
+            <h2>Ejercicio 4 — Geometría personalizada: cuadrado agujereado</h2>
+            <p>
+                Se usa <span class="code">BufferGeometry</span> para definir una geometría 2D plana con forma de
+                cuadrado con un agujero cuadrado en el centro, especificando vértices e índices de triángulos manualmente.
+            </p>
+            <iframe class="container" src="prac1-4.html"></iframe>
+
+            <h2>Ejercicio 5 — Geometría personalizada: casa plana</h2>
+            <p>
+                Se crea una geometría 2D con forma de casa (cuerpo rectangular más tejado triangular)
+                usando <span class="code">BufferGeometry</span>, añadiéndola a la misma escena del ejercicio anterior.
+                Se aleja la cámara para que ambos objetos sean visibles.
+            </p>
+            <iframe class="container" src="prac1-5.html"></iframe>
+
+            <h2>Ejercicio 6 — Materiales y casa con huecos</h2>
+            <p>
+                Se construye una escena completa con cuatro objetos usando tres tipos de materiales distintos:
+            </p>
+            <ul>
+                <li><strong>Cubo rojo</strong>: <span class="code">MeshBasicMaterial</span> — color uniforme, no necesita luz.</li>
+                <li><strong>Cilindro azul</strong>: <span class="code">MeshLambertMaterial</span> — modelo Lambert (componentes ambiental y difusa), requiere luz.</li>
+                <li><strong>Esfera verde</strong>: <span class="code">MeshPhongMaterial</span> — modelo Blinn-Phong (ambiental, difusa y especular), requiere luz.</li>
+                <li><strong>Casa naranja</strong>: <span class="code">MeshBasicMaterial</span> con geometría <span class="code">BufferGeometry</span> personalizada, con huecos de ventanas y puerta.</li>
+            </ul>
+            <p>
+                Se añaden una <span class="code">AmbientLight</span> y una <span class="code">PointLight</span>
+                para iluminar los objetos Lambert y Phong.
+            </p>
+            <iframe class="container" src="prac1-6.html"></iframe>
+
+            <h2>Dificultades encontradas</h2>
+            <ul>
+                <li>
+                    <strong>El cubo no se veía:</strong> el mesh blanco
+                    se confundía con el fondo claro. Se solucionó añadiendo color al material y usando
+                    renderer.setClearColor() para oscurecer el fondo.
+                </li>
+                <li>
+                    <strong>Página en blanco tras mezclar código:</strong> el JS fallaba porque se intentaba
+                    acceder a un div#message que no existía en el HTML.
+                    Se depuró con la consola del navegador.
+                </li>
+                <li>
+                    <strong>Huecos en la casa (ventanas y puerta):</strong> fue necesario planificar
+                    cuidadosamente los índices de vértices para triangular correctamente la pared alrededor
+                    de cada hueco sin solapar triángulos ni dejar zonas sin cubrir.
+                </li>
+                <li>
+                    <strong>Puerto incorrecto del servidor webpack:</strong> en ocasiones el servidor arrancó en el puerto
+                    8081/8082 en lugar del 8080 esperado por estar ya ocupado. Se accedió directamente a la
+                    URL correcta.
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
