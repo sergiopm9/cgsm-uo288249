@@ -34,6 +34,7 @@ if ( WEBGL.isWebGL2Available() ) {
     const cylinderMaterial = new THREE.MeshLambertMaterial( { color: 0x0000ff } );
     const cylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
     cylinder.position.set( 0, 0, 0 );
+    cylinder.rotation.x = Math.PI / 8; // Rotar ligeramente para ver la arista superior
     scene.add( cylinder );
 
     // ---- Esfera verde - MeshPhongMaterial (ambiental, difusa y especular) ----

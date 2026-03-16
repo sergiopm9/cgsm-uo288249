@@ -2,20 +2,19 @@ import * as THREE from 'three';
 
 const scene = new THREE.Scene();
 
-const renderer = new THREE.WebGLRenderer( { antialias: true } );
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0x444444 );
-document.body.appendChild( renderer.domElement );
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x444444);
+document.body.appendChild(renderer.domElement);
 
-const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 4000 );
-camera.position.set( 0, 0, 300 );
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000);
+camera.position.set(0, 0, 300);
 
-const geometry = new THREE.BoxGeometry( 100, 100, 100 );
+const geometry = new THREE.BoxGeometry(100, 100, 100);
 const material = new THREE.MeshBasicMaterial();
-const box = new THREE.Mesh( geometry, material );
+const box = new THREE.Mesh(geometry, material);
 
-box.rotation.x = Math.PI / 4;
-box.rotation.y = Math.PI / 4;
+// Sin rotación en el ejercicio 2 para que sea un cuadrado frontal
 
-scene.add( box );
-renderer.render( scene, camera );
+scene.add(box);
+renderer.render(scene, camera);
