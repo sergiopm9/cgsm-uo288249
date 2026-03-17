@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "webpack-glsl-loader": "^1.0.1"
+  }
+}
