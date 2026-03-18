@@ -13,8 +13,9 @@ if (WEBGL.isWebGL2Available()) {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
+    // Cámara más cerca (más zoom)
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
-    camera.position.set(0, 1500, 4000); 
+    camera.position.set(0, 1500, 2200); // Antes: 4000
     camera.lookAt(0, 0, 0);
 
     const textureLoader = new THREE.TextureLoader();
@@ -110,10 +111,11 @@ if (WEBGL.isWebGL2Available()) {
     });
 
     // --- 4. ILUMINACIÓN ---
-    const pointLight = new THREE.PointLight(0xffffff, 4000000, 0); // Doblada la intensidad
+    // Más luz en la escena
+    const pointLight = new THREE.PointLight(0xffffff, 12000000, 0); // Antes: 4000000
     scene.add(pointLight);
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 1.2); // Aumentada de 0.8 a 1.2
+    const ambientLight = new THREE.AmbientLight(0x404040, 2.5); // Antes: 1.2
     scene.add(ambientLight);
 
     // --- 5. ANIMACIÓN ---
@@ -132,10 +134,10 @@ if (WEBGL.isWebGL2Available()) {
         atmosphere.rotation.y += rotEarth * 0.95;
 
         // Luna órbita Tierra (Aumentada)
-        moonGroup.rotation.y += rotEarth / 14; // El doble de rápido proporcionalmente
+        moonGroup.rotation.y += rotEarth / 7; // Más rápido
 
         // Tierra órbita Sol (Aumentada)
-        earthOrbitGroup.rotation.y += rotEarth / 180; // El doble de rápido proporcionalmente
+        earthOrbitGroup.rotation.y += rotEarth / 60; // Mucho más rápido
 
         // ISS órbita Tierra (rápida)
         if (iss) {
