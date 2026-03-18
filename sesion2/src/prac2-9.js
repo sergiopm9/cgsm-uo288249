@@ -44,8 +44,8 @@ if (WEBGL.isWebGL2Available()) {
     });
 
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-    // El Sol muy lejos en el fondo
-    sun.position.set(-2000, 500, -3000);
+    // El Sol un poco más cerca para composición
+    sun.position.set(-1500, 400, -2500);
     scene.add(sun);
 
     // --- 2. SISTEMA TIERRA (Fondo) ---
@@ -88,8 +88,8 @@ if (WEBGL.isWebGL2Available()) {
     moonGroup.rotation.x = 0.089;
 
     const earthContainer = new THREE.Object3D();
-    // La Tierra un poco más cerca que el Sol pero aún al fondo
-    earthContainer.position.set(1500, -200, -2500);
+    // Traemos la Tierra mucho más cerca para que la ISS parezca su satélite
+    earthContainer.position.set(250, -50, -500); 
     earthContainer.add(earthGroup);
     earthContainer.add(moonGroup);
     scene.add(earthContainer);

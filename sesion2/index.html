@@ -1,86 +1,113 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>Informe de prácticas de CGSM (2015-2016)</title>
-        <link rel="stylesheet" type="text/css" href="report.css">
-    </head>
-    <body>
-        <!-- Información general -->
-        <div id="head">
-            <table id="general">
-                <tr>
-                    <th class="header">Nombre:</th>
-                    <td>Juan Carlos Granda Candás</td>                     
-                </tr>
-                <tr>
-                    <th>Práctica:</th>
-                    <td>1</td> 
-                </tr>
-            </table>
-        </div>
-        <div id="content">
-            <h1>Memoria de la Sesión 2</h1>
-            
-            <h2>Descripción de la práctica</h2>
-            <p>En esta sesión se ha desarrollado un simulador del sistema solar utilizando Three.js. Se ha comenzado con una configuración básica y se han ido añadiendo capas de complejidad: texturizado de planetas, sistemas de partículas (nubes), órbitas sincronizadas, sombreadores (shaders) personalizados para el Sol e importación de modelos 3D externos (ISS).</p>
 
-            <h2>Ejercicio 1 - Configuración Básica</h2>
-            <p>Se estableció la escena inicial con un cubo rotando para verificar el funcionamiento del renderizador y la cámara.</p>
-            <iframe class="container" src="prac2-1.html"></iframe>
+<head>
+    <meta charset='utf-8'>
+    <title>Informe de prácticas de CGSM (2015-2016)</title>
+    <link rel="stylesheet" type="text/css" href="report.css">
+</head>
 
-            <h2>Ejercicio 2 - La Tierra y Texturas</h2>
-            <p>Se implementó la esfera terrestre aplicando una textura de mapa de bits.</p>
-            <iframe class="container" src="prac2-2.html"></iframe>
+<body>
+    <!-- Información general -->
+    <div id="head">
+        <table id="general">
+            <tr>
+                <th class="header">Nombre:</th>
+                <td>Juan Carlos Granda Candás</td>
+            </tr>
+            <tr>
+                <th>Práctica:</th>
+                <td>1</td>
+            </tr>
+        </table>
+    </div>
+    <div id="content">
+        <h1>Memoria de la Sesión 2</h1>
 
-            <h2>Ejercicio 3 - Materiales</h2>
-            <p>Se ajustó el material para que reaccionara a la iluminación (MeshPhongMaterial).</p>
-            <iframe class="container" src="prac2-3.html"></iframe>
+        <h2>Descripción de la práctica</h2>
+        <p>En esta sesión se ha desarrollado un simulador del sistema solar utilizando Three.js. Se ha comenzado con una
+            configuración básica y se han ido añadiendo capas de complejidad: texturizado de planetas, sistemas de
+            partículas (nubes), órbitas sincronizadas, sombreadores (shaders) personalizados para el Sol e importación
+            de modelos 3D externos (ISS).</p>
 
-            <h2>Ejercicio 4 - Atmósfera</h2>
-            <p>Se añadió una capa de nubes transparente sobre la Tierra.</p>
-            <iframe class="container" src="prac2-4.html"></iframe>
+        <h2>Ejercicio 1 - Configuración Básica</h2>
+        <p>Se estableció la escena inicial con un cubo rotando para verificar el funcionamiento del renderizador y la
+            cámara.</p>
+        <iframe class="container" src="prac2-1.html"></iframe>
 
-            <h2>Ejercicio 5 - La Luna</h2>
-            <p>Se introdujo la Luna respetando la escala relativa (0.27 veces el tamaño de la Tierra).</p>
-            <iframe class="container" src="prac2-5.html"></iframe>
+        <h2>Ejercicio 2 - La Tierra y Texturas</h2>
+        <p>Se implementó la esfera terrestre aplicando una textura de mapa de bits y se ajustó el material para que
+            reaccionara a la iluminación (MeshPhongMaterial).</p>
+        <iframe class="container" src="prac2-2.html"></iframe>
 
-            <h2>Ejercicio 6 - Animación de la Tierra</h2>
-            <p>Implementación del ciclo día/noche mediante la rotación de la Tierra y sus nubes.</p>
-            <iframe class="container" src="prac2-6.html"></iframe>
+        <h2>Ejercicio 3 - Atmósfera</h2>
+        <p>Se añadió una capa de nubes transparente sobre la Tierra.</p>
+        <iframe class="container" src="prac2-3.html"></iframe>
 
-            <h2>Ejercicio 7 - Animación de la Luna</h2>
-            <p>Movimiento orbital de la Luna (período de 28 días) alrededor de la Tierra.</p>
-            <iframe class="container" src="prac2-7.html"></iframe>
+        <h2>Ejercicio 4 - Rotación sobre eje Z</h2>
+        <p>Se rotó la Tierra sobre su eje Z 23 grados incluyendo globo terráqueo y atmósfera y realizar la rotación
+            sobre el objeto para que afecte al mismo tiempo al globo y la atmósfera.</p>
+        <iframe class="container" src="prac2-4.html"></iframe>
 
-            <h2>Ejercicio 8 - Sombreadores (Shaders)</h2>
-            <p>Uso de <code>ShaderMaterial</code> para crear un efecto de lava dinámico en el Sol. Se utilizaron mapas de ruido y distorsión para simular la superficie estelar.</p>
-            <iframe class="container" src="prac2-8.html"></iframe>
+        <h2>Ejercicio 5 - La Luna</h2>
+        <p>Se introdujo la Luna respetando la escala relativa (0.27 veces el tamaño de la Tierra).</p>
+        <iframe class="container" src="prac2-5.html"></iframe>
 
-            <h2>Ejercicio 9 - Integración Final (ISS)</h2>
-            <p>Carga de un modelo COLLADA de la Estación Espacial Internacional (ISS) mediante <code>ColladaLoader</code>. El modelo se integra en primer plano con el sistema solar de fondo.</p>
-            <iframe class="container" src="prac2-9.html"></iframe>
+        <h2>Ejercicio 6 - Animación de la Tierra</h2>
+        <p>Implementación del ciclo día/noche mediante la rotación de la Tierra y sus nubes.</p>
+        <iframe class="container" src="prac2-6.html"></iframe>
 
-            <h2>Ejercicio Extra - Orbita Solar Completa</h2>
-            <p>En este ejercicio adicional, se ha modificado la jerarquía para que la Tierra (junto con la Luna y la ISS) realice una órbita completa alrededor del Sol, mientras conservan sus rotaciones y órbitas locales.</p>
-            <iframe class="container" src="ej_extra.html"></iframe>
+        <h2>Ejercicio 7 - Animación de la Luna</h2>
+        <p>Movimiento orbital de la Luna (período de 28 días) alrededor de la Tierra.</p>
+        <iframe class="container" src="prac2-7.html"></iframe>
 
-            <h2>Captura Significativa</h2>
-            <p>Vista general del sistema integrado con la ISS, el Sol y la Tierra.</p>
-            <img src="images/screenshot_final.png" alt="Captura Final ISS" style="width:100%; border: 1px solid #c00;">
+        <h2>Ejercicio 8 - Shaders</h2>
+        <p>Uso de <code>ShaderMaterial</code> para crear un efecto de lava dinámico en el Sol. Se utilizaron mapas de
+            ruido y distorsión para simular la superficie estelar.</p>
+        <iframe class="container" src="prac2-8.html"></iframe>
 
-            <h2>Dificultades encontradas</h2>
-            <ul>
-                <li><strong>Gestión de rutas:</strong> El cargador de modelos COLLADA requería que las texturas estuvieran en una carpeta relativa específica. Se solucionó ajustando la estructura de archivos en <code>models/</code>.</li>
-                <li><strong>Carga de texturas (Crate):</strong> La textura de la caja (Prac 2-2) no se cargaba correctamente al inicio debido a rutas incorrectas, lo que se solucionó verificando el servidor de desarrollo y la ruta <code>textures/crate.gif</code>.</li>
-                <li><strong>Visualización e iluminación del Sol:</strong> Inicialmente el Sol no se veía correctamente debido al recorte (clipping) y a que carecía de una fuente de luz propia que afectara al resto de astros. Se integró un <code>PointLight</code> en su posición para dar coherencia al sistema.</li>
-                <li><strong>Sincronización de órbitas:</strong> Lograr que la Luna rotara siempre enfrentando la misma cara a la Tierra requirió ajustes en los grupos de transformación (Object3D).</li>
-                <li><strong>Configuración de Shaders:</strong> La configuración de los <code>uniforms</code> y el <code>RepeatWrapping</code> fue clave para que el efecto de lava fluyera sin cortes visibles.</li>
-            </ul>
+        <h2>Ejercicio 9 - Integración Final (ISS)</h2>
+        <p>Carga de un modelo COLLADA de la Estación Espacial Internacional (ISS) mediante <code>ColladaLoader</code>.
+            El modelo se integra en primer plano con el sistema solar de fondo.</p>
+        <iframe class="container" src="prac2-9.html"></iframe>
 
-            <h2>Respuestas a las cuestiones</h2>
-            <p><strong>¿Cómo se simula la transparencia de las nubes?</strong> Mediante el uso de un material <code>MeshLambertMaterial</code> con la propiedad <code>transparent: true</code> y un valor de <code>opacity</code> adecuado (aprox 0.5).</p>
-            <p><strong>¿Qué ventaja tiene usar Object3D para las órbitas?</strong> Permite crear jerarquías de transformación independientes, facilitando que la Luna orbite el centro de la Tierra sin que su rotación propia afecte a la trayectoria.</p>
-        </div>
-    </body>
+        <h2>Ejercicio Extra - Orbita Solar Completa</h2>
+        <p>En este ejercicio adicional, se ha modificado la jerarquía para que la Tierra (junto con la Luna y la ISS)
+            realice una órbita completa alrededor del Sol, mientras conservan sus rotaciones y órbitas locales.</p>
+        <iframe class="container" src="ej_extra.html"></iframe>
+
+        <h2>Captura Significativa</h2>
+        <p>Vista general del sistema integrado con la ISS, el Sol y la Tierra.</p>
+        <img src="images/screenshot_final.png" alt="Captura Final ISS" style="width:100%; border: 1px solid #c00;">
+
+        <h2>Dificultades encontradas</h2>
+        <ul>
+            <li><strong>Gestión de rutas:</strong> El cargador de modelos COLLADA requería que las texturas estuvieran
+                en una carpeta relativa específica. Se solucionó ajustando la estructura de archivos en
+                <code>models/</code>.
+            </li>
+            <li><strong>Carga de texturas (Crate):</strong> La textura de la caja (Prac 2-2) no se cargaba correctamente
+                al inicio debido a rutas incorrectas, lo que se solucionó verificando el servidor de desarrollo y la
+                ruta <code>textures/crate.gif</code>.</li>
+            <li><strong>Visualización e iluminación del Sol:</strong> Inicialmente el Sol no se veía correctamente
+                debido al recorte (clipping) y a que carecía de una fuente de luz propia que afectara al resto de
+                astros. Se integró un <code>PointLight</code> en su posición para dar coherencia al sistema.</li>
+            <li><strong>Sincronización de órbitas:</strong> Lograr que la Luna rotara siempre enfrentando la misma cara
+                a la Tierra requirió ajustes en los grupos de transformación (Object3D).</li>
+            <li><strong>Configuración de Shaders:</strong> La configuración de los <code>uniforms</code> y el
+                <code>RepeatWrapping</code> fue clave para que el efecto de lava fluyera sin cortes visibles.
+            </li>
+        </ul>
+
+        <h2>Respuestas a las cuestiones</h2>
+        <p><strong>¿Cómo se simula la transparencia de las nubes?</strong> Mediante el uso de un material
+            <code>MeshLambertMaterial</code> con la propiedad <code>transparent: true</code> y un valor de
+            <code>opacity</code> adecuado (aprox 0.5).
+        </p>
+        <p><strong>¿Qué ventaja tiene usar Object3D para las órbitas?</strong> Permite crear jerarquías de
+            transformación independientes, facilitando que la Luna orbite el centro de la Tierra sin que su rotación
+            propia afecte a la trayectoria.</p>
+    </div>
+</body>
+
 </html>
