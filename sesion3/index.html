@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Informe de prácticas de CGSM (2025-26)</title>
+    <link rel="stylesheet" type="text/css" href="report.css">
+</head>
+
+<body>
+    <div id="head">
+        <table id="general">
+            <tr>
+                <th>Nombre:</th>
+                <td>Sergio Pociño Martínez</td>
+            </tr>
+            <tr>
+                <th>Práctica:</th>
+                <td>Sesión 3</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="content">
+        <h1>Memoria de la Sesión 3</h1>
+
+        <h2>Resumen de tareas y resultados</h2>
+        <p>Durante la sesión se desarrollaron cuatro escenas centradas en texturas avanzadas e interactividad. Se
+            implementó mapeado topológico (bump map), textura de vídeo, control dinámico de parámetros con GUI,
+            monitorización de rendimiento (FPS) y navegación en primera persona con teclado/ratón.</p>
+
+        <ul>
+            <li><strong>Ejercicio 3.1:</strong> comparación entre textura base y textura con <span
+                    class="code">bumpMap</span>.</li>
+            <li><strong>Ejercicio 3.2:</strong> vídeo como textura sobre plano, con reproducción inversa y control de
+                pausa.</li>
+            <li><strong>Ejercicio 3.3:</strong> control interactivo de <span class="code">bumpScale</span> y panel de
+                FPS.</li>
+            <li><strong>Ejercicio 3.4:</strong> escena en primera persona con rejilla, iluminación y cubos con materiales
+                por cara.</li>
+        </ul>
+
+        <h2>Ejercicio 3.1 - Texturas avanzadas (bump map)</h2>
+        <p>Se añadieron dos cubos con la misma geometría para comparar textura plana frente a textura con mapa
+            topológico. El cubo derecho utiliza <span class="code">bumpScale = 3</span> fijo para enfatizar la diferencia
+            visual.</p>
+        <iframe class="container" src="prac3-1.html"></iframe>
+
+        <h2>Ejercicio 3.2 - Vídeo como textura</h2>
+        <p>Se aplicó una textura de vídeo sobre un plano mediante canvas intermedio, con botón inicial (overlay) para
+            cumplir la interacción requerida por el navegador. La reproducción se configuró en reversa y se añadieron
+            panel FPS y control <span class="code">Pause</span>.</p>
+        <iframe class="container" src="prac3-2.html"></iframe>
+
+        <h2>Ejercicio 3.3 - GUI + Stats</h2>
+        <p>Se incluyó un control de GUI para modificar <span class="code">bumpScale</span> en tiempo real y se enlazó
+            correctamente durante la animación. También se integró <span class="code">stats.js</span> para monitorizar
+            el framerate.</p>
+        <iframe class="container" src="prac3-3.html"></iframe>
+
+        <h2>Ejercicio 3.4 - Primera persona</h2>
+        <p>Escena con <span class="code">GridHelper</span>, dos cubos texturizados con una cara especial enfrentada,
+            iluminación direccional + hemisférica, y navegación con <span class="code">FirstPersonControls</span>
+            (teclado + ratón en horizontal/vertical).</p>
+        <iframe class="container" src="prac3-4.html"></iframe>
+
+        <h2>Dificultades encontradas y soluciones</h2>
+        <ul>
+            <li><strong>Efecto bump poco visible:</strong> aunque el mapa topológico estaba cargado correctamente, el
+                relieve apenas se apreciaba porque la iluminación inicial era demasiado uniforme y el contraste
+                especular era bajo. Se corrigió reequilibrando luces (menos ambiente y luz principal más rasante) y
+                afinando <span class="code">bumpScale</span> hasta obtener una diferencia clara entre el cubo sin bump y
+                el cubo con bump, sin llegar a artefactos exagerados.
+            </li>
+            <li><strong>Control GUI sin efecto:</strong> el slider modificaba un valor en pantalla, pero no afectaba al
+                material porque faltaba el enlace explícito en tiempo de ejecución. La solución fue leer en cada frame
+                el valor del objeto contenedor y asignarlo al material
+                (<span class="code">material.bumpScale = controlData.bumpScale</span>, con la inversión de signo cuando
+                fue necesario para mantener la correspondencia visual deseada).
+            </li>
+            <li><strong>Vídeo en negro al invertir reproducción:</strong> al invertir el vídeo, algunos intentos
+                iniciales actualizaban <span class="code">currentTime</span> sin esperar estados válidos del reproductor,
+                provocando frames no disponibles. Se solucionó sincronizando la lógica con eventos
+                <span class="code">loadedmetadata</span> y <span class="code">seeked</span>, avanzando en pasos
+                controlados hacia atrás y actualizando la textura únicamente cuando el frame estaba realmente listo.
+            </li>
+            <li><strong>Cámara first-person sin movimiento vertical:</strong> por configuración inicial,
+                <span class="code">FirstPersonControls</span> tenía bloqueada la mirada vertical. Se habilitó con
+                <span class="code">lookVertical = true</span>, permitiendo rotación completa con el ratón en ambos ejes y
+                una navegación más natural.
+            </li>
+        </ul>
+
+        <h2>Respuestas concisas a cuestiones del guión</h2>
+        <p><strong>¿Se aprecia el efecto de <span class="code">bumpScale</span>?</strong> Sí. El parámetro controla la
+            intensidad del relieve aparente sobre la textura sin modificar la geometría real del objeto. Valores más
+            altos producen una sensación de rugosidad más marcada, y valores negativos invierten el relieve (zonas que
+            parecían sobresalir pasan a percibirse como hundidas).</p>
+        <p><strong>¿Por qué el control GUI podía cambiar y no verse efecto?</strong> Porque el control modifica un dato
+            JavaScript, pero el material no se actualiza automáticamente. Para que tenga efecto visual hay que propagar
+            ese valor al material en el ciclo de animación, enlazando explícitamente el estado de la GUI con
+            <span class="code">material.bumpScale</span>.
+        </p>
+        <p><strong>¿Por qué se usa botón inicial en la escena de vídeo?</strong> Porque los navegadores modernos aplican
+            políticas de autoplay restrictivas y exigen interacción previa del usuario para iniciar contenido multimedia
+            de forma fiable. El botón del overlay garantiza ese gesto inicial y evita bloqueos de reproducción.</p>
+        <p><strong>¿Cómo se actualiza una textura de vídeo?</strong> Se toma el frame actual del elemento
+            <span class="code">video</span>, se dibuja sobre un canvas intermedio y, después, se marca la textura para
+            actualización con
+            <span class="code">texture.needsUpdate = true</span>.
+        </p>
+
+        <h2>Capturas significativas</h2>
+        <p>Las escenas anteriores embebidas muestran los resultados finales funcionales de cada ejercicio. No se incluyen
+            capturas adicionales fuera de los propios iframes.</p>
+    </div>
+</body>
+
+</html>

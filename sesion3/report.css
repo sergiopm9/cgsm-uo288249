@@ -1,0 +1,44 @@
+#general {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 24px;
+    line-height: 1.45;
+}
+
+#content {
+    max-width: 1100px;
+}
+
+th {
+    background: SteelBlue;
+    color: white;
+}
+
+th,
+td {
+    padding: 5px 10px;
+}
+
+tr {
+    background: WhiteSmoke;
+}
+
+.container {
+    min-height: 500px;
+    width: 100%;
+    background-color: black;
+    margin: 8px 0 24px 0;
+    border-top: #c00 1px dotted;
+    border-right: #c00 2px dotted;
+    border-left: #c00 2px dotted;
+    border-bottom: #c00 4px dotted;
+}
+
+.code {
+    font-style: italic;
+}
