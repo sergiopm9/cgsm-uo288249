@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Informe de prácticas de CGSM (2025-26)</title>
+    <link rel="stylesheet" type="text/css" href="report.css">
+</head>
+
+<body>
+    <!-- Información general -->
+    <div id="head">
+        <table id="general">
+            <tr>
+                <th class="header">Nombre:</th>
+                <td>Sergio Pociño Martínez</td>
+            </tr>
+            <tr>
+                <th>Práctica:</th>
+                <td>4</td>
+            </tr>
+        </table>
+    </div>
+    <div id="content">
+        <h1>Memoria de la Sesión 4</h1>
+
+        <h2>Descripción de la práctica</h2>
+        <p>En esta sesión se han introducido elementos interactivos de colisión, selección (Raycast) y multimedia (sonido espacial en 3D, texturas interactivas y vídeo).</p>
+
+        <h2>Ejercicio 1 - Audio Posicional</h2>
+        <p>Se introdujeron cajas estáticas y se les aplicó la capacidad de emitir sonido posicional. Al acercarse la cámara, el audio se amplifica, y al alejarse se atenúa.</p>
+        <iframe class="container" src="prac4-1.html" width="100%" height="400px"></iframe>
+
+        <h2>Ejercicio 2 - Selección de objetos (Raycaster)</h2>
+        <p>A través de la clase <code>THREE.Raycaster</code> y la normalización de la posición del ratón en la pantalla generamos un rayo desde la cámara y determinamos con qué caja intersecaba el cursor, mostrando el evento por la consola.</p>
+        <iframe class="container" src="prac4-2.html" width="100%" height="400px"></iframe>
+
+        <h2>Ejercicio 3 - Interacción y conmutación de texturas</h2>
+        <p>Se agregó soporte para interrumpir y reanudar el sonido empleando la combinación del objeto seleccionado (raycaster) y pulsar la barra espaciadora. Además, se proporcionó retroalimentación visual sobre las caras frontales con texturas de botones de apagado/encendido (textura_off.png / textura_on.png).</p>
+        <iframe class="container" src="prac4-3.html" width="100%" height="400px"></iframe>
+
+        <h2>Ejercicio 4 - Detección de colisiones</h2>
+        <p>Para dotar a la cámara de volumen físico e imposibilitando atravesar las cajas, se estableció un conjunto de movimientos posibles y se calcularon intersecciones a cada paso <code>clock.getDelta()</code> en el plano horizontal (8 vías direccionales). Si había una colisión inminente (a 20 unidades o menos), se deshacía la trayectoria (`-delta`).</p>
+        <iframe class="container" src="prac4-4.html" width="100%" height="400px"></iframe>
+
+        <h2>Ejercicio 5 (Extra) - Reproductor de Vídeo Interactivo en Escena 2D</h2>
+        <p>En el último avance creamos una malla sobre un objeto PlaneGeometry para actuar como pantalla y cargar una <code>THREE.VideoTexture</code> ("sintel.mp4"), sustituyendo las funcionalidades previas de sonido. Activando la caja izquierda con espacio iniciamos su reproducción y activando la derecha la pausamos, alterando también las texturas para indicar el estado de reproducción/pausa correspondientemente.</p>
+        <iframe class="container" src="prac4-5.html" width="100%" height="400px"></iframe>
+
+        <h2>Capturas Significativas</h2>
+        <p>Apreciaciones visuales de los elementos.</p>
+        <img src="textures/brick-map-with-button.png" alt="Map topológico boton" style="height:200px; padding: 10px; border: 1px solid #c00;">
+        <img src="textures/textura_on.png" alt="Botón encendido" style="height:200px; padding: 10px; border: 1px solid #c00;">
+
+        <h2>Dificultades encontradas y Soluciones</h2>
+        <ul>
+            <li><strong>Mapeo de Rutas (Webpack):</strong> Ocurrió un error inicial en el archivo interno `webpack.config.js` porque intentaba construir los archivos correspondientes a las sesiones pasadas (`prac3-x`). Fue solventado reemplazando los <em>entry points</em> a la nomenclatura actualizada (`prac4-x.js`).</li>
+            <li><strong>Carga de textura fallida (Negro Sólido):</strong> La documentación dictaba cargar los botones como `.jpg`, sin embargo, los ficheros proporcionados se trataban de extensiones `.png`. Se reparó corrigiendo las extensiones en las dependencias para evitar que cargase texturas huérfanas o vacías de color negro.</li>
+            <li><strong>Orientación de cubos:</strong> A la hora de mapear la textura de los botones frente al origen, se observó que la geometría de `BoxGeometry` en combinación con la matriz de materiales asignaba el botón del cubo izquierdo en su cara `+X` y el botón del cubo derecho en su cara `-X`. Se resolvió referenciando la textura dinámica hacia estos índices concretos del array del material individual de cada caja respectiva.</li>
+        </ul>
+
+        <h2>Respuestas a las cuestiones</h2>
+        <p><strong>¿Por qué cargar y guardar las dos texturas inicialmente y sólo intercambiarlas (evitar sobrecarga)?</strong><br>
+            Instanciar un nuevo cargamento estático de imagen (vía HTTP/DOM) e inicializar un <code>Material</code> asociado o enviar nuevos recursos de píxeles hacia la tarjeta gráfica (VRAM) continuamente produce desajustes o parones (stutter) en los fotogramas (frame-times). Al pre-cargar en variables ambas texturas estáticas al principio, la memoria GPU dispone de ellas directamente, agilizando instantáneamente la llamada de intercambio (únicamente levantando el flag de <code>needsUpdate = true</code>).</p>
+        <p><strong>¿Por qué la detección de colisión simple revirtiendo el `controls.update(delta)` no es muy robusta con FirstPersonControls?</strong><br>
+            Porque los controles calculan en base a esferas polares matemáticas para la cámara. Deshacer el <code>update</code> revirtiendo el tiempo (empleando un paso `delta` negativo) puede generar desincronización por coma flotante / redondeo o que el raycaster siga detectando la barrera inmediatamente a la vez que no te permita salir, enjaulándote o saltándose esquinas agudas. Además deshacer no tiene en cuenta la rotación de "look" o las interpolaciones del ratón.
+        </p>
+    </div>
+</body>
+
+</html>
