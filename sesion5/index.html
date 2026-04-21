@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Informe de prácticas de CGSM - Sesión 5</title>
+    <link rel="stylesheet" type="text/css" href="report.css">
+</head>
+
+<body>
+    <!-- Información general -->
+    <div id="head">
+        <table id="general">
+            <tr>
+                <th class="header">Nombre:</th>
+                <td>Sergio Pociño Martínez</td>
+            </tr>
+            <tr>
+                <th>Práctica:</th>
+                <td>5 - Streaming Adaptativo (MPEG-DASH)</td>
+            </tr>
+        </table>
+    </div>
+    <div id="content">
+        <h1>Memoria de la Sesión 5</h1>
+
+        <h2>Descripción de la práctica</h2>
+        <p>En esta sesión se ha trabajado en la integración de la biblioteca <code>Dash.js</code> para la reproducción de contenido multimedia mediante streaming adaptativo (MPEG-DASH). Se han desarrollado dos ejercicios: un reproductor básico en HTML5 y una integración avanzada como textura de vídeo dentro de una escena de Three.js.</p>
+
+        <h2>Ejercicio 4.1 - Reproductor DASH básico</h2>
+        <p>Se ha implementado una página web que utiliza la biblioteca <code>dash.all.min.js</code> para inicializar un elemento de vídeo con un manifiesto DASH (.mpd). Esto permite que el reproductor ajuste automáticamente la calidad del vídeo en función del ancho de banda disponible.</p>
+        <iframe class="container" src="prac5-1.html" width="100%" height="500px"></iframe>
+
+        <h2>Ejercicio 4.2 - Textura de vídeo DASH en Three.js</h2>
+        <p>Se ha integrado el flujo de vídeo MPEG-DASH dentro de un entorno 3D. El elemento de vídeo, controlado por <code>Dash.js</code>, se utiliza como fuente para una <code>THREE.VideoTexture</code> aplicada a un plano en rotación. Se ha incluido un sistema de "overlay" para asegurar la interacción del usuario antes de iniciar el flujo de vídeo y el audio.</p>
+        <iframe class="container" src="prac5-2.html" width="100%" height="500px"></iframe>
+
+        <h2>Dificultades encontradas y Soluciones</h2>
+        <ul>
+            <li><strong>Errores de tipo MIME (dash.all.min.js):</strong> Inicialmente, la biblioteca Dash.js no cargaba y la consola mostraba un error de tipo MIME (<code>text/html</code>). Esto se debía a una ruta incorrecta (<code>lib/dash.all.min.js</code> vs raíz). Se solucionó corrigiendo la ruta en los archivos HTML.</li>
+            <li><strong>Conflictos de puerto (EADDRINUSE):</strong> Al intentar ejecutar el servidor de vídeos y el de la aplicación Webpack simultáneamente, hubo conflictos en el puerto 8080. Se resolvió asignando el puerto 8081 (y posteriormente 8082) al servidor de vídeos para mantener la independencia de servicios.</li>
+            <li><strong>Rutas del Manifiesto:</strong> El nombre del archivo generado por MP4Box (<code>sintel_final.mpd</code> vs <code>sintel.mpd</code>) y la estructura de carpetas (<code>/Ejercicio/</code>) causaron errores 404. Se sincronizaron los nombres tras verificar el contenido exacto del servidor local.</li>
+            <li><strong>Interacción inicial:</strong> Los navegadores modernos bloquean el autoplay con audio si no hay una interacción previa. Se implementó un botón de inicio que inicializa tanto el reproductor Dash como la escena de Three.js simultáneamente.</li>
+        </ul>
+
+        <h2>Respuestas a las cuestiones</h2>
+        <p><strong>¿Qué es un manifiesto MPD y cuál es su función en DASH?</strong><br>
+            El MPD (Media Presentation Description) es un archivo XML que describe todos los componentes del flujo de vídeo: las diferentes calidades disponibles (bitrates), los segmentos de tiempo y las URLs donde se encuentran. Su función es informar al cliente (Dash.js) para que este pueda decidir qué segmento descargar en cada momento dependiendo de la red.</p>
+        
+        <p><strong>¿Qué ventajas aporta el streaming adaptativo frente a la descarga progresiva tradicional?</strong><br>
+            La descarga progresiva (ej. un .mp4 directo) siempre descarga el mismo archivo independientemente de la red. El streaming adaptativo fragmenta el vídeo y ofrece múltiples versiones; si la conexión empeora, el reproductor cambia a una versión de menor peso instantáneamente sin detener la reproducción.</p>
+
+        <h2>Capturas Significativas</h2>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <div style="text-align: center;">
+                <img src="captura5-1.png" alt="Captura del reproductor DASH básico" style="max-width: 400px; border: 1px solid #374151; border-radius: 8px;">
+                <p>Reproductor DASH básico</p>
+            </div>
+            <div style="text-align: center;">
+                <img src="captura5-2.png" alt="Captura de la textura de vídeo en Three.js" style="max-width: 400px; border: 1px solid #374151; border-radius: 8px;">
+                <p>Textura de vídeo 3D</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
