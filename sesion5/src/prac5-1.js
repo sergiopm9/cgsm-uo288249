@@ -1,5 +1,5 @@
 const query = new URLSearchParams(window.location.search);
-const url = query.get('mpd') || 'http://localhost:8082/sintel.mpd';
+const url = query.get('mpd') || 'http://localhost:60080/Ejercicio/sintel.mpd';
 const playerElement = document.querySelector('#player');
 
 if (!window.dashjs) {

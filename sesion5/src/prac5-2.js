@@ -9,7 +9,7 @@ if (WEBGL.isWebGL2Available()) {
     const video = document.getElementById('video');
 
     const query = new URLSearchParams(window.location.search);
-    const url = query.get('mpd') || 'http://localhost:8082/sintel.mpd';
+    const url = query.get('mpd') || 'http://localhost:60080/Ejercicio/sintel.mpd';
 
     let player;
 
