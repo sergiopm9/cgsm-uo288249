@@ -1,0 +1,30 @@
+"use strict";
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+self["webpackHotUpdatesesion4"]("prac5-2",{
+
+/***/ "./src/prac5-2.js"
+/*!************************!*\
+  !*** ./src/prac5-2.js ***!
+  \************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ \"./node_modules/three/build/three.module.js\");\n/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three */ \"./node_modules/three/build/three.core.js\");\n/* harmony import */ var three_examples_jsm_libs_lil_gui_module_min_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three/examples/jsm/libs/lil-gui.module.min.js */ \"./node_modules/three/examples/jsm/libs/lil-gui.module.min.js\");\n/* harmony import */ var three_examples_jsm_libs_stats_module_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three/examples/jsm/libs/stats.module.js */ \"./node_modules/three/examples/jsm/libs/stats.module.js\");\n\r\n\r\n\r\n\r\nlet scene;\r\nlet renderer;\r\nlet camera;\r\nlet wall;\r\nlet video;\r\nlet texture;\r\nlet stats;\r\nlet controlData;\r\nconst clock = new three__WEBPACK_IMPORTED_MODULE_1__.Clock();\r\n\r\nconst startButton = document.getElementById('startButton');\r\nstartButton.addEventListener('click', () => init(), false);\r\n\r\nfunction init() {\r\n    const overlay = document.getElementById('overlay');\r\n    if (overlay) overlay.remove();\r\n\r\n    setupScene();\r\n    setupVideoTexture();\r\n    animate();\r\n}\r\n\r\nfunction setupScene() {\r\n    scene = new three__WEBPACK_IMPORTED_MODULE_1__.Scene();\r\n\r\n    renderer = new three__WEBPACK_IMPORTED_MODULE_0__.WebGLRenderer({ antialias: true });\r\n    renderer.setPixelRatio(window.devicePixelRatio);\r\n    renderer.setSize(window.innerWidth, window.innerHeight);\r\n    renderer.setClearColor(0x111111);\r\n    document.body.appendChild(renderer.domElement);\r\n\r\n    stats = new three_examples_jsm_libs_stats_module_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"]();\r\n    stats.dom.style.position = 'absolute';\r\n    stats.dom.style.top = '0px';\r\n    document.body.appendChild(stats.dom);\r\n\r\n    controlData = {\r\n        pause: false\r\n    };\r\n\r\n    const gui = new three_examples_jsm_libs_lil_gui_module_min_js__WEBPACK_IMPORTED_MODULE_2__.GUI({ title: 'Controles' });\r\n    gui.add(controlData, 'pause').name('Pause');\r\n\r\n    camera = new three__WEBPACK_IMPORTED_MODULE_1__.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000);\r\n    camera.position.set(0, 0, 650);\r\n\r\n    window.addEventListener('resize', onWindowResize, false);\r\n}\r\n\r\nfunction setupVideoTexture() {\r\n    video = document.getElementById('video');\r\n\r\n    // 1. Inicializamos Dash.js con TU manifiesto local\r\n    // Usamos el manifiesto público para verificar que la escena funciona:\r\n    const url = \"https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd\";\r\n\r\n    // Opciones para el servidor local (ejecuta http-server -p 8080 --cors en la carpeta adecuada):\r\n    // const url = \"http://localhost:8080/Ejercicio/sintel_final.mpd\";\r\n    // const url = \"http://localhost:8080/sintel_final.mpd\";\r\n\r\n    const player = dashjs.MediaPlayer().create();\r\n    player.initialize(video, url, true);\r\n\r\n    // 2. Creamos la textura de Three.js directamente desde el elemento de vídeo\r\n    texture = new three__WEBPACK_IMPORTED_MODULE_1__.VideoTexture(video);\r\n    texture.colorSpace = three__WEBPACK_IMPORTED_MODULE_1__.SRGBColorSpace;\r\n    texture.minFilter = three__WEBPACK_IMPORTED_MODULE_1__.LinearFilter;\r\n    texture.magFilter = three__WEBPACK_IMPORTED_MODULE_1__.LinearFilter;\r\n\r\n    // 3. Aplicamos la textura al material y creamos el plano\r\n    const material = new three__WEBPACK_IMPORTED_MODULE_1__.MeshBasicMaterial({ map: texture, side: three__WEBPACK_IMPORTED_MODULE_1__.DoubleSide });\r\n\r\n    // Mantengo las proporciones que tenías (480x204)\r\n    wall = new three__WEBPACK_IMPORTED_MODULE_1__.Mesh(new three__WEBPACK_IMPORTED_MODULE_1__.PlaneGeometry(480, 204, 4, 4), material);\r\n    scene.add(wall);\r\n\r\n    // Forzamos el play (el autoplay de HTML a veces falla sin interacción)\r\n    video.play().catch((error) => {\r\n        console.error('No se pudo reproducir el vídeo:', error);\r\n    });\r\n}\r\n\r\nfunction onWindowResize() {\r\n    camera.aspect = window.innerWidth / window.innerHeight;\r\n    camera.updateProjectionMatrix();\r\n    renderer.setSize(window.innerWidth, window.innerHeight);\r\n}\r\n\r\nfunction animate() {\r\n    requestAnimationFrame(animate);\r\n\r\n    const delta = clock.getDelta();\r\n\r\n    // Controlamos el pause desde la interfaz GUI\r\n    if (controlData.pause && !video.paused) {\r\n        video.pause();\r\n    } else if (!controlData.pause && video.paused) {\r\n        video.play();\r\n    }\r\n\r\n    // Rotamos el plano\r\n    if (wall) {\r\n        wall.rotation.y += delta * 0.75;\r\n    }\r\n\r\n    stats.update();\r\n    renderer.render(scene, camera);\r\n}\n\n//# sourceURL=webpack://sesion4/./src/prac5-2.js?\n}");
+
+/***/ }
+
+},
+/******/ function(__webpack_require__) { // webpackRuntimeModules
+/******/ /* webpack/runtime/getFullHash */
+/******/ (() => {
+/******/ 	__webpack_require__.h = () => ("ca485b2d9e7558eb015e")
+/******/ })();
+/******/ 
+/******/ }
+);
