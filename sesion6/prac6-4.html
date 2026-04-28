@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>CGSM - Práctica 6.4 (WebRTC + WebGL)</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #111;
+        }
+
+        #overlay > div > button {
+            padding: 8px 16px;
+            height: auto;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay">
+        <div>
+            <button id="startButton">Iniciar escena</button>
+            <p>Se requiere interacción para activar la cámara.</p>
+        </div>
+    </div>
+
+    <video id="video" style="display:none" autoplay="true" playsinline muted></video>
+
+    <script src="dist/prac6-4.js"></script>
+</body>
+</html>

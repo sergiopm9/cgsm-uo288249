@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGSM - Prac 6-3: Llamadas WebRTC</title>
+    <link rel="stylesheet" href="prac6-3.css">
+</head>
+
+<body>
+    <div id="container">
+        <video id="localVideo" autoplay="true" muted="true" playsinline></video>
+        <video id="remoteVideo" autoplay="true" playsinline></video>
+
+        <div>
+            <button id="startButton" disabled="true">Start</button>
+            <button id="callButton" disabled="true">Call</button>
+            <button id="hangupButton" disabled="true">Hang up</button>
+        </div>
+    </div>
+
+    <script defer src="dist/prac6-3.js"></script>
+</body>
+
+</html>

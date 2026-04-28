@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Informe de prácticas de CGSM - Sesión 6</title>
+    <link rel="stylesheet" type="text/css" href="report.css">
+</head>
+
+<body>
+    <div id="head">
+        <table id="general">
+            <tr>
+                <th class="header">Nombre:</th>
+                <td>Sergio Pociño Martínez</td>
+            </tr>
+            <tr>
+                <th>Práctica:</th>
+                <td>6 - WebRTC</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="content">
+        <h1>Memoria de la Sesión 6</h1>
+
+        <h2>Descripción de la práctica</h2>
+        <p>En esta sesión se ha desarrollado una aplicación WebRTC básica para acceder a la cámara del equipo mediante la API <span class="code">MediaStream</span>. Se ha creado una primera página con la vista en directo del vídeo y una segunda página que permite capturar un frame y descargarlo como imagen PNG.</p>
+
+        <h2>Ejercicio 6.1 - Captura básica de vídeo</h2>
+        <p>Se implementa un flujo de vídeo en tiempo real desde la cámara utilizando <span class="code">navigator.mediaDevices.getUserMedia</span>. El stream se vincula directamente al elemento <span class="code">video</span> y se registran los datos del dispositivo en consola.</p>
+        <iframe class="container" src="prac6-1.html" width="100%" height="500px"></iframe>
+
+        <h2>Ejercicio 6.2 - Captura de fotografías</h2>
+        <p>Se añade un <span class="code">canvas</span> oculto para copiar el frame actual del vídeo. El enlace de captura genera un PNG con <span class="code">canvas.toDataURL</span> y activa la descarga directa mediante el atributo <span class="code">download</span>.</p>
+        <iframe class="container" src="prac6-2.html" width="100%" height="500px"></iframe>
+
+        <h2>Ejercicio 6.3 - Llamadas con WebRTC</h2>
+        <p>Se implementa una comunicación entre dos extremos dentro de la misma página usando <span class="code">RTCPeerConnection</span>. Se gestionan las ofertas/respuestas SDP y los candidatos ICE, mostrando el flujo local y el remoto en paralelo.</p>
+        <iframe class="container" src="prac6-3.html" width="100%" height="500px"></iframe>
+
+        <h2>Ejercicio 6.4 - Integración WebRTC con WebGL</h2>
+        <p>Se reutiliza la escena de la sesión 3 con una textura de vídeo, sustituyendo el archivo multimedia por el stream de la cámara mediante <span class="code">getUserMedia</span>. El resultado es una textura viva aplicada a un plano en rotación.</p>
+        <iframe class="container" src="prac6-4.html" width="100%" height="500px"></iframe>
+
+        <h2>Dificultades encontradas y soluciones</h2>
+        <ul>
+            <li><strong>Permisos de cámara:</strong> El navegador bloquea el acceso sin interacción o sin HTTPS/localhost. Se probó siempre en localhost y se validó el permiso concedido.</li>
+            <li><strong>Tamaño del canvas:</strong> El canvas se ajusta al tamaño real del vídeo usando el evento <span class="code">canplay</span>, evitando deformaciones en la captura.</li>
+            <li><strong>Sincronización de la llamada:</strong> La negociación SDP y el intercambio de ICE requieren un orden correcto. Se enlazaron las callbacks de forma explícita para mantener la secuencia local-remota.</li>
+        </ul>
+
+        <h2>Notas adicionales</h2>
+        <p>Se ha incorporado la librería <span class="code">webrtc-adapter</span> para asegurar compatibilidad entre navegadores y facilitar el acceso a la API WebRTC.</p>
+    </div>
+</body>
+
+</html>
