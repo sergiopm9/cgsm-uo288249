@@ -25,33 +25,113 @@
         <h1>Memoria de la Sesión 6</h1>
 
         <h2>Descripción de la práctica</h2>
-        <p>En esta sesión se ha desarrollado una aplicación WebRTC básica para acceder a la cámara del equipo mediante la API <span class="code">MediaStream</span>. Se ha creado una primera página con la vista en directo del vídeo y una segunda página que permite capturar un frame y descargarlo como imagen PNG.</p>
+        <p>En esta sesión se ha explorado el funcionamiento básico de <strong>WebRTC</strong> (Web Real-Time
+            Communication), una tecnología integrada de forma nativa en los navegadores modernos que permite la
+            comunicación multimedia en tiempo real sin necesidad de plugins ni software adicional. WebRTC expone tres
+            APIs principales: <span class="code">MediaStream</span> para acceder a los flujos de cámara y micrófono,
+            <span class="code">RTCPeerConnection</span> para establecer conexiones extremo a extremo con audio/vídeo, y
+            <span class="code">RTCDataChannel</span> para el intercambio de datos.
+        </p>
+        <p>A lo largo de la sesión se han desarrollado cuatro ejercicios: captura básica de vídeo desde la cámara,
+            captura de fotogramas y descarga como PNG, llamada WebRTC entre dos extremos en la misma página, e
+            integración de un stream de cámara como textura dinámica en una escena WebGL con Three.js, reutilizando una
+            práctica realizada previamente. En todos los ejercicios se ha utilizado la biblioteca <span
+                class="code">webrtc-adapter</span> para garantizar compatibilidad entre navegadores.</p>
 
         <h2>Ejercicio 6.1 - Captura básica de vídeo</h2>
-        <p>Se implementa un flujo de vídeo en tiempo real desde la cámara utilizando <span class="code">navigator.mediaDevices.getUserMedia</span>. El stream se vincula directamente al elemento <span class="code">video</span> y se registran los datos del dispositivo en consola.</p>
+        <p>En este primer ejercicio se implementa la captura del flujo de vídeo procedente de la cámara web del equipo.
+            Para ello se utiliza la API <span class="code">navigator.mediaDevices.getUserMedia</span>, que recibe un
+            objeto <span class="code">constraints</span> donde se especifican los flujos a capturar (en este caso vídeo
+            sin audio) y sus parámetros opcionales. La función devuelve una promesa: si el usuario concede el permiso,
+            se obtiene un objeto <span class="code">MediaStream</span> que se asigna directamente a la propiedad <span
+                class="code">srcObject</span> del elemento <span class="code">&lt;video&gt;</span>, haciendo que el
+            vídeo se reproduzca en tiempo real.</p>
+        <p>Se
+            comprobó que la API acepta restricciones de resolución exacta (por ejemplo <span class="code">{
+                width: { exact: 640 }, height: { exact: 480 } }</span>), aunque si la cámara no admite la resolución
+            indicada, la promesa es rechazada.</p>
         <iframe class="container" src="prac6-1.html" width="100%" height="500px"></iframe>
 
         <h2>Ejercicio 6.2 - Captura de fotografías</h2>
-        <p>Se añade un <span class="code">canvas</span> oculto para copiar el frame actual del vídeo. El enlace de captura genera un PNG con <span class="code">canvas.toDataURL</span> y activa la descarga directa mediante el atributo <span class="code">download</span>.</p>
+        <p>Partiendo del ejercicio anterior, se añade la funcionalidad de captura de fotogramas. La solución utiliza un
+            elemento <span class="code">canvas</span> que actúa como buffer intermedio. Para que la copia del frame sea
+            correcta, es necesario que el canvas tenga exactamente las mismas dimensiones que el vídeo capturado. Como
+            estas dimensiones no se conocen de antemano, se utiliza el evento <span class="code">canplay</span> del
+            elemento vídeo para calcularse en tiempo de ejecución a partir de <span class="code">video.videoWidth</span>
+            y <span class="code">video.videoHeight</span>.</p>
+        <p>Al pulsar el enlace de captura, se copia el frame actual del stream al canvas. A continuación, <span
+                class="code">canvas.toDataURL('image/png')</span> genera una URL en base64 con la imagen, que se asigna
+            al atributo <span class="code">href</span> del enlace. Gracias al atributo <span
+                class="code">download</span> del elemento <span class="code">&lt;a&gt;</span>, el navegador inicia
+            automáticamente la descarga del fichero PNG al hacer clic, sin necesidad de ninguna petición al servidor.
+        </p>
         <iframe class="container" src="prac6-2.html" width="100%" height="500px"></iframe>
 
         <h2>Ejercicio 6.3 - Llamadas con WebRTC</h2>
-        <p>Se implementa una comunicación entre dos extremos dentro de la misma página usando <span class="code">RTCPeerConnection</span>. Se gestionan las ofertas/respuestas SDP y los candidatos ICE, mostrando el flujo local y el remoto en paralelo.</p>
+        <p>Este ejercicio muestra el mecanismo de establecimiento de una llamada WebRTC simulando los dos extremos de la
+            conexión dentro de la misma página. Se crean dos objetos RTCPeerConnection, que en una aplicación real
+            residirían en navegadores diferentes, y se podrían comunicar mediante, por ejemplo, un WebSocket.</p>
+        <p>El flujo de negociación es el siguiente: el lado local genera una oferta SDP que describe sus capacidades
+            multimedia; dicha oferta se establece como
+            descripción local y se entrega al remoto como descripción remota. El remoto crea una respuesta SDP que viaja
+            en sentido contrario. Paralelamente, el protocolo ICE intercambia candidatos de red entre ambos extremos
+            permitiendo atravesar NAT y firewalls. Una vez completada la
+            negociación, el evento <span class="code">ontrack</span> del lado remoto recibe el stream de vídeo local y
+            lo muestra en el segundo recuadro. La función <span class="code">hangup</span> cierra ambas conexiones y
+            restablece el estado inicial de los botones.</p>
         <iframe class="container" src="prac6-3.html" width="100%" height="500px"></iframe>
 
         <h2>Ejercicio 6.4 - Integración WebRTC con WebGL</h2>
-        <p>Se reutiliza la escena de la sesión 3 con una textura de vídeo, sustituyendo el archivo multimedia por el stream de la cámara mediante <span class="code">getUserMedia</span>. El resultado es una textura viva aplicada a un plano en rotación.</p>
+        <p>En el último ejercicio se demuestra que WebRTC puede integrarse con otras tecnologías
+            HTML5. Se parte de la escena desarrollada en la sesión 3 con Three.js, donde una textura de vídeo se
+            aplicaba sobre un plano en rotación. La modificación consiste en sustituir la fuente de vídeo estático por
+            el stream de la cámara web obtenido con <span class="code">getUserMedia</span>.</p>
+        <p>La técnica de actualización de la textura consiste en mantener un elemento <span
+                class="code">&lt;canvas&gt;</span> auxiliar del tamaño de la textura (480×270 píxeles) al que se copia
+            el frame actual del vídeo en cada iteración del bucle de renderizado. A continuación se marca la textura
+            Three.js como
+            modificada con <span class="code">texture.needsUpdate = true</span>, lo que provoca que la GPU suba el nuevo
+            contenido del canvas en la siguiente llamada a <span class="code">renderer.render</span>. Esta actualización
+            solo se realiza cuando el vídeo tiene datos disponibles, comprobando <span class="code">video.readyState >=
+                HAVE_CURRENT_DATA</span>. La escena incluye además un panel de control con <span
+                class="code">lil-gui</span> para pausar la rotación y un contador de FPS con <span
+                class="code">Stats.js</span>.</p>
         <iframe class="container" src="prac6-4.html" width="100%" height="500px"></iframe>
 
         <h2>Dificultades encontradas y soluciones</h2>
         <ul>
-            <li><strong>Permisos de cámara:</strong> El navegador bloquea el acceso sin interacción o sin HTTPS/localhost. Se probó siempre en localhost y se validó el permiso concedido.</li>
-            <li><strong>Tamaño del canvas:</strong> El canvas se ajusta al tamaño real del vídeo usando el evento <span class="code">canplay</span>, evitando deformaciones en la captura.</li>
-            <li><strong>Sincronización de la llamada:</strong> La negociación SDP y el intercambio de ICE requieren un orden correcto. Se enlazaron las callbacks de forma explícita para mantener la secuencia local-remota.</li>
+            <li><strong>Permisos de cámara en contexto no seguro:</strong> La API <span class="code">getUserMedia</span>
+                solo funciona en contextos seguros (HTTPS o <span class="code">localhost</span>). Al intentar abrir los
+                ficheros directamente el navegador rechazaba la petición de
+                permisos sin mostrar ningún diálogo. La solución fue lanzar siempre la aplicación a través de un
+                servidor de desarrollo local (<span class="code">npm start</span> con Webpack Dev Server), que expone la
+                aplicación en <span class="code">http://localhost</span> y cumple el requisito de contexto seguro.</li>
+            <li><strong>Dimensiones del canvas en la captura de fotogramas:</strong> Si el canvas se dimensionaba antes
+                de que el vídeo estuviese listo, las dimensiones resultaban 0×0 y la imagen capturada quedaba en blanco.
+                Se resolvió escuchando el evento <span class="code">canplay</span> del elemento vídeo, que garantiza que
+                <span class="code">video.videoWidth</span> y <span class="code">video.videoHeight</span> ya tienen
+                valores válidos antes de ajustar el canvas.
+            </li>
+            <li><strong>Orden de la negociación SDP e ICE:</strong> En el ejercicio 6.3, la negociación entre <span
+                    class="code">localPeerConnection</span> y <span class="code">remotePeerConnection</span> debe seguir
+                un orden estricto: primero establecer la descripción local del llamante, luego entregarla al receptor
+                como descripción remota, generar la respuesta, y finalmente cruzar las descripciones. Cualquier desorden
+                en las llamadas asíncronas producía un estado de conexión inválido. La solución fue encadenar las
+                promesas con callbacks.</li>
+            <li><strong>Actualización de la textura WebGL con stream en vivo:</strong> A diferencia de un vídeo estático
+                con una URL conocida, Three.js no detecta automáticamente los cambios en el stream de cámara. Fue
+                necesario copiar manualmente el frame del vídeo a un canvas auxiliar en cada iteración del bucle <span
+                    class="code">animate()</span>.</li>
         </ul>
 
         <h2>Notas adicionales</h2>
-        <p>Se ha incorporado la librería <span class="code">webrtc-adapter</span> para asegurar compatibilidad entre navegadores y facilitar el acceso a la API WebRTC.</p>
+        <p>Se ha incorporado la librería <span class="code">webrtc-adapter</span> para normalizar las diferencias entre
+            implementaciones del estándar WebRTC en distintos navegadores (principalmente Chrome y Firefox), evitando
+            tener que detectar manualmente el proveedor y adaptar las llamadas a la API.</p>
+        <p> Puesto que los propios canvas muestran lo que se debería ver en el navegador, no considero necesario agregar
+            capturas de pantalla para mostrar el correcto funcionamiento. Asimismo, el guión de prácticas no propone
+            ninguna pregunta o cuestión,
+            por lo que no es posible proponer respuestas concisas a las mismas.</p>
     </div>
 </body>
 
